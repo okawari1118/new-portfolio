@@ -1,0 +1,654 @@
+/* =========================================
+   ベース設定
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    color: #333;
+    overflow: hidden; /* body自体のスクロールは消す */
+}
+
+/* =========================================
+   フルページスクロール (縦)
+   ========================================= */
+.scroll-container {
+height: 100dvh;
+    overflow-y: scroll; /* 縦スクロールを許可 */
+    scroll-snap-type: y mandatory; /* 縦スナップの魔法 */
+    scroll-behavior: smooth;
+}
+
+.snap-area {
+height: 100dvh;
+    width: 100%;
+    scroll-snap-align: start; /* スナップ位置 */
+    
+    /* コンテンツ配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    background-color: #f5f5f5;
+}
+
+/* 偶数セクションの背景色 */
+.snap-area:nth-child(even) {
+    background-color: #e0e0e0;
+}
+
+/* =========================================
+   TOPセクション (VS Code風エディタ)
+   ========================================= */
+#top .content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* エディタウィンドウ */
+.vscode-window {
+    flex: 1;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* ヘッダー */
+.vscode-header {
+    background-color: #252526;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.red { background-color: #ff5f56; }
+.yellow { background-color: #ffbd2e; }
+.green { background-color: #27c93f; }
+
+.title {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #9aabbd;
+}
+
+/* ボディ */
+.vscode-body {
+    padding: 20px;
+    min-height: 200px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* シンタックスハイライト */
+.keyword { color: #569cd6; }
+.variable { color: #9cdcfe; }
+.property { color: #9cdcfe; }
+.string { color: #ce9178; }
+.punctuation { color: #d4d4d4; }
+.comment { color: #6a9955; }
+
+/* カーソル */
+.cursor { color: #aeafad; }
+.cursor.active { animation: blink 1s step-end infinite; }
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* キャッチコピー */
+.catch-copy { flex: 0.8; }
+.catch-copy h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+/* --- Worksセクション --- */
+#works {
+    padding: 0;
+    position: relative;
+    /* セクション自体は背景黒などにしておく */
+    background-color: #111;
+}
+
+/* タイトルを左上に固定（全スライド共通で見えるように） */
+#works .section-title {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    z-index: 20; /* 画像より手前 */
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    margin: 0;
+    font-size: 2rem;
+}
+
+/* 横スクロールコンテナ */
+.horizontal-slider {
+    width: 100%;
+    height: 100vh; /* 高さ100% */
+    display: flex;
+    
+    /* 横スクロールとスナップの設定 */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    
+    /* 余白は不要（フルスクリーンなので） */
+    padding: 0;
+    gap: 0; /* 隙間なし */
+
+    cursor: grab;
+    scrollbar-width: none;
+}
+.horizontal-slider::-webkit-scrollbar { display: none; }
+.horizontal-slider.active { cursor: grabbing; }
+
+
+/* --- 新しいスライド枠（画面サイズ） --- */
+.project-slide {
+    /* 画面いっぱいのサイズ */
+    width: 100vw;
+height: 100dvh;
+    flex: 0 0 auto; /* 縮まない */
+    
+    /* ここでスナップさせる */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    
+    /* 中身（円）を中央寄せ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: relative;
+    overflow: hidden;
+}
+
+/* 背景用レイヤー（全画面に画像を敷いてぼかす演出） */
+.slide-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+    /* 親要素から変数を継承 */
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    
+    /* 少し暗くしてぼかす（主役の円を目立たせるため） */
+    filter: blur(20px) brightness(0.6);
+    transform: scale(1.1); /* ぼかしの端が見えないように拡大 */
+    z-index: 1;
+}
+
+
+/* --- 円（バブル）本体 --- */
+.work-bubble {
+    /* サイズは維持 */
+    width: 70vh;
+    height: 70vh;
+    max-width: 80vw;
+    max-height: 80vw;
+    
+    border-radius: 50%;
+    /* 以前の margin や scroll-snap設定は親に移ったので不要 */
+    
+    /* 浮き上がるような影 */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    
+    z-index: 2; /* 背景より手前 */
+    position: relative;
+    overflow: hidden;
+
+    /* 円の中の画像設定 */
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    
+    transition: background-position 4s ease-in-out, transform 0.3s ease;
+}
+
+/* ホバー時の動き（そのまま継承） */
+.work-bubble:hover {
+    background-position: bottom center;
+    transform: scale(1.05);
+}
+
+/* オーバーレイなどは以前のままでOK */
+.bubble-overlay {
+    /* (以前のコードと同じ) */
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+.work-bubble:hover .bubble-overlay { opacity: 0; }
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    #works .section-title {
+        font-size: 1.5rem;
+        left: 20px;
+        top: 20px;
+    }
+    .work-bubble {
+        width: 70vw;
+        height: 70vw;
+    }
+}
+/* style.css の最後に追記してください */
+
+/* スライダーの中のリンクや画像は、ブラウザ標準のドラッグを禁止する */
+.work-bubble a,
+.work-bubble img {
+    -webkit-user-drag: none; /* Chrome, Safari */
+    user-drag: none; /* Standard (future) */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; /* テキスト選択も禁止 */
+}
+/* --- スライダーコントローラー --- */
+.slider-controls {
+    position: absolute;
+    bottom: 40px;
+    right: 40px; /* 右下に配置 */
+    z-index: 20; /* 画像より手前 */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    font-family: 'Consolas', monospace; /* 数字は等幅フォントがかっこいい */
+}
+
+/* カウンター (01 / 03) */
+.slide-counter {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.divider {
+    opacity: 0.5;
+    font-size: 1rem;
+}
+
+/* 矢印ボタン */
+.nav-arrow {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    
+    /* 呼吸するようなアニメーション（アフォーダンス） */
+    animation: pulseArrow 2s infinite;
+}
+
+.arrow-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* ホバー時の挙動 */
+.nav-arrow:hover {
+    background-color: #fff;
+    color: #333;
+    border-color: #fff;
+    animation: none; /* ホバー中は点滅を止める */
+}
+
+.nav-arrow:hover .arrow-icon {
+    transform: translateX(3px); /* 矢印が少し右に動く */
+}
+
+/* アニメーション定義 */
+@keyframes pulseArrow {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* スマホ調整 */
+@media (max-width: 768px) {
+    .slider-controls {
+        bottom: 20px;
+        right: 20px;
+    }
+    .slide-counter {
+        font-size: 1rem;
+    }
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+    }
+}
+/* --- モーダルウィンドウ --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 200; /* 最前面 */
+    
+    /* グラスモーフィズム（すりガラス）背景 */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    /* 中央寄せ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* アニメーション用 */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+/* 表示時のクラス */
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* モーダルの中身 */
+.modal-content {
+    background: rgba(30, 30, 30, 0.9); /* VS Codeっぽいダーク色 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* バネのような動き */
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+/* 閉じるボタン */
+.close-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* テキストスタイル */
+#modal-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+#modal-tech {
+    color: #569cd6; /* 青色 */
+    font-family: 'Consolas', monospace;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+}
+
+#modal-desc {
+    color: #d4d4d4;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    white-space: pre-wrap; /* 改行を反映させる */
+}
+
+/* リンクボタン */
+.modal-btn {
+    display: inline-block;
+    background-color: #fff;
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.modal-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* --- Contact セクション --- */
+#contact {
+    /* サイトの最後なのでダークテーマで締める */
+    background-color: #1e1e1e; 
+    color: #d4d4d4;
+    position: relative;
+    /* フレックスで中央寄せ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#contact .section-title {
+    /* 他のセクションと違い、ここは白文字 */
+    color: #fff;
+    position: static; /* 固定配置を解除 */
+    margin-bottom: 20px;
+}
+
+.contact-desc {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 0.9rem;
+    color: #9aabbd;
+    line-height: 1.6;
+}
+
+.contact-container {
+    width: 90%;
+    max-width: 600px;
+    z-index: 10;
+}
+
+/* --- ターミナル風フォーム --- */
+.terminal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ラベル（プロンプト風） */
+.input-group label {
+    font-family: 'Consolas', monospace;
+    font-size: 0.9rem;
+    color: #569cd6; /* 青色 */
+}
+
+.prompt {
+    color: #27c93f; /* 緑色 */
+    margin-right: 8px;
+}
+
+/* 入力エリア */
+.input-group input,
+.input-group textarea {
+    background-color: #252526; /* 少し明るいグレー */
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit; /* 本文フォント継承 */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* フォーカス時の光る演出 */
+.input-group input:focus,
+.input-group textarea:focus {
+    outline: none;
+    border-color: #007acc; /* VS Codeのブルー */
+    box-shadow: 0 0 8px rgba(0, 122, 204, 0.5);
+}
+
+/* テキストエリアのリサイズ制限 */
+.input-group textarea {
+    resize: vertical;
+}
+
+/* 送信ボタン */
+.submit-btn {
+    margin-top: 10px;
+    background-color: #007acc;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.submit-btn:hover {
+    background-color: #005a9e;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* フッター */
+.site-footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+
+/* --- ドットナビゲーション --- */
+.dot-nav {
+    position: fixed;
+    top: 50%;
+    right: 30px; /* 画面右端からの距離 */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100; /* 全ての要素より手前に */
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3); /* 未選択時は半透明 */
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 背景が白い時用の枠線 */
+    cursor: pointer;
+}
+
+/* 選択中のスタイル */
+.nav-dot.active {
+    background-color: #007acc; /* アクセントカラー（青） */
+    transform: scale(1.3); /* 少し大きく */
+    border: none;
+}
+
+/* 背景が暗いセクション（Works/Contact）での視認性確保のため、
+   mix-blend-modeを使う手もありますが、今回はシンプルに半透明白で対応 */
+
+
+   /* --- スマホ専用調整 (画面幅768px以下) --- */
+@media (max-width: 768px) {
+    
+    /* TOP: 文字サイズを少し小さく */
+    .catch-copy h1 {
+        font-size: 2rem; /* PCだと3remだったのを小さく */
+    }
+    .vscode-body{
+        font-size: 13px;
+    }
+    /* TOP: エディタと文字の隙間を詰める */
+    #top .content-wrapper {
+        gap: 20px;
+        width: 100%; /* 横幅いっぱい使う */
+        padding: 0 20px;
+        flex-direction: column;
+    }
+
+    /* Works: 円のサイズ調整 */
+    .work-bubble {
+        width: 80vw; /* 画面幅の80% */
+        height: 80vw; /* 正円にするため同じ値 */
+    }
+
+    /* Contact: フォームの横幅を広げる */
+    .contact-container {
+        width: 90%;
+    }
+    
+    /* Contact: タイトル位置調整 */
+    #contact .section-title {
+        margin-top: -20px; /* 少し上に詰める */
+    }
+
+    /* ナビゲーション: スマホでは邪魔なら消す、あるいは小さくする */
+    .dot-nav {
+        right: 15px; /* 端に寄せる */
+    }
+    .nav-dot {
+        width: 10px;
+        height: 10px;
+    }
+}
