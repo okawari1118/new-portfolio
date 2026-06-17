@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a1916">
+  <title>Ryu Okawa — Model Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-loading">
+
+  <!-- ============ LOADING : Blur-to-Focus ============ -->
+  <div class="loader" id="loader" aria-hidden="false">
+    <div class="loader-bg" style="background-image: url('mv1.webp');"></div>
+    <div class="loader-vignette"></div>
+    <div class="loader-content">
+      <div class="loader-mark">
+        <span>R</span><span>Y</span><span>U</span>
+        <span class="sp"></span>
+        <span>O</span><span>K</span><span>A</span><span>W</span><span>A</span>
+      </div>
+      <div class="loader-progress">
+        <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+        <div class="loader-meta">
+          <span class="loader-label">LOADING</span>
+          <span class="loader-percent" id="loaderPercent">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader">
+    <a href="#main-movie" class="brand">
+      <span class="brand-name">RYU OKAWA</span>
+      <span class="brand-sub">大川 竜</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#profile">Profile</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#social">Connect</a>
+      <a href="../" class="nav-cross">Index ↗</a>
+    </nav>
+  </header>
+
+  <!-- Smooth-scroll target wrapper -->
+  <div class="scroll-root" id="scrollRoot">
+
+    <!-- ============ MAIN MOVIE ============ -->
+    <section id="main-movie" class="section section-mv">
+      <div class="mv-media" id="mvMedia">
+        <video class="mv-video" autoplay muted loop playsinline poster="mv1.webp">
+          <source src="https://cdn.coverr.co/videos/coverr-a-fashion-model-1581/1080p.mp4" type="video/mp4">
+        </video>
+        <img class="mv-fallback" src="mv1.webp" alt="">
+        <div class="mv-grain"></div>
+      </div>
+
+      <div class="mv-content" id="mvContent">
+        <div class="mv-meta">
+          <span class="mv-tag">PORTFOLIO</span>
+          <span class="mv-divider"></span>
+          <span class="mv-year">2026 — NAGOYA / TOKYO</span>
+        </div>
+        <h1 class="mv-title">
+          <span class="mv-line"><span>Ryu</span></span>
+          <span class="mv-line"><span>Okawa</span></span>
+        </h1>
+        <p class="mv-tagline">Fashion · Editorial · Runway</p>
+      </div>
+
+      <div class="mv-scroll-hint">
+        <span class="hint-text">SCROLL</span>
+        <span class="hint-line"></span>
+      </div>
+    </section>
+
+    <!-- ============ PROFILE ============ -->
+    <section id="profile" class="section section-profile">
+      <div class="section-label">
+        <span class="label-num">01</span>
+        <span class="label-name">PROFILE</span>
+        <span class="label-sub">/ 自己紹介</span>
+      </div>
+
+      <div class="profile-inner">
+        <figure class="profile-portrait reveal">
+          <div class="portrait-frame">
+            <img src="mv2.webp" alt="Ryu Okawa">
+          </div>
+          <figcaption>Photo · 2025 / Tokyo</figcaption>
+        </figure>
+
+        <div class="profile-text">
+          <h2 class="profile-heading reveal-lines">
+            <span class="line-mask"><span>Quiet presence,</span></span>
+            <span class="line-mask"><span>quiet strength.</span></span>
+          </h2>
+
+          <div class="profile-bio reveal-lines">
+            <p>
+              <span class="line-mask"><span>名古屋・東京を拠点に活動するモデル。</span></span>
+              <span class="line-mask"><span>ファッション、エディトリアル、</span></span>
+              <span class="line-mask"><span>ランウェイを中心に、</span></span>
+              <span class="line-mask"><span>静謐な表情と質感を大切にしています。</span></span>
+            </p>
+            <p>
+              <span class="line-mask"><span>余白を残すような佇まいで、</span></span>
+              <span class="line-mask"><span>作品の世界観に静かに溶け込む</span></span>
+              <span class="line-mask"><span>表現を追求しています。</span></span>
+            </p>
+          </div>
+
+          <dl class="profile-info reveal">
+            <div class="info-row"><dt>Name</dt><dd>Ryu Okawa</dd></div>
+            <div class="info-row"><dt>Born</dt><dd>2000 · Nagoya</dd></div>
+            <div class="info-row"><dt>Height</dt><dd>171 cm</dd></div>
+            <div class="info-row"><dt>Bust</dt><dd>81 cm</dd></div>
+            <div class="info-row"><dt>Waist</dt><dd>72 cm</dd></div>
+            <div class="info-row"><dt>Hip</dt><dd>95 cm</dd></div>
+            <div class="info-row"><dt>Shoes</dt><dd>27.0 cm</dd></div>
+            <div class="info-row"><dt>Hair</dt><dd>Black</dd></div>
+            <div class="info-row"><dt>Eyes</dt><dd>Dark Brown</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section id="gallery" class="section section-gallery">
+      <div class="section-label">
+        <span class="label-num">02</span>
+        <span class="label-name">GALLERY</span>
+        <span class="label-sub">/ 制作実績</span>
+      </div>
+
+      <h2 class="gallery-heading reveal-lines">
+        <span class="line-mask"><span>Selected</span></span>
+        <span class="line-mask"><span>Works</span></span>
+      </h2>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <figure class="gallery-item col-l" data-index="1">
+          <div class="gi-inner">
+            <img src="mv1.webp" alt="Editorial 001" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">001</span><span class="gi-cat">Editorial</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-r" data-index="2">
+          <div class="gi-inner">
+            <img src="mv2.webp" alt="Portrait 002" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">002</span><span class="gi-cat">Portrait</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-l" data-index="3">
+          <div class="gi-inner">
+            <img src="mv3.webp" alt="Runway 003" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">003</span><span class="gi-cat">Runway</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-r" data-index="4">
+          <div class="gi-inner">
+            <img src="mv2.webp" alt="Studio 004" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">004</span><span class="gi-cat">Studio</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-l" data-index="5">
+          <div class="gi-inner">
+            <img src="mv1.webp" alt="Outdoor 005" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">005</span><span class="gi-cat">Outdoor</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-r" data-index="6">
+          <div class="gi-inner">
+            <img src="mv3.webp" alt="Beauty 006" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">006</span><span class="gi-cat">Beauty</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-l" data-index="7">
+          <div class="gi-inner">
+            <img src="mv3.webp" alt="Mood 007" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">007</span><span class="gi-cat">Mood</span></figcaption>
+        </figure>
+        <figure class="gallery-item col-r" data-index="8">
+          <div class="gi-inner">
+            <img src="mv1.webp" alt="Campaign 008" loading="lazy">
+          </div>
+          <figcaption><span class="gi-num">008</span><span class="gi-cat">Campaign</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ SOCIAL ============ -->
+    <section id="social" class="section section-social">
+      <div class="section-label light">
+        <span class="label-num">03</span>
+        <span class="label-name">CONNECT</span>
+        <span class="label-sub">/ お問い合わせ</span>
+      </div>
+
+      <h2 class="social-heading reveal-lines">
+        <span class="line-mask"><span>Let's create</span></span>
+        <span class="line-mask"><span>something together.</span></span>
+      </h2>
+
+      <ul class="social-links">
+        <li class="reveal">
+          <a href="#" class="social-link">
+            <span class="sl-label">Instagram</span>
+            <span class="sl-handle">@ryu.okawa</span>
+            <span class="sl-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li class="reveal">
+          <a href="#" class="social-link">
+            <span class="sl-label">X / Twitter</span>
+            <span class="sl-handle">@ryuokawa</span>
+            <span class="sl-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li class="reveal">
+          <a href="mailto:contact@example.com" class="social-link">
+            <span class="sl-label">Email</span>
+            <span class="sl-handle">contact@ryuokawa.jp</span>
+            <span class="sl-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+
+      <footer class="site-footer">
+        <span>© 2026 Ryu Okawa</span>
+        <a href="../" class="footer-cross">Other Portfolio ↗</a>
+        <span>Nagoya · Tokyo · Japan</span>
+      </footer>
+    </section>
+
+  </div><!-- /.scroll-root -->
+
+  <!-- ============ LIGHTBOX (Shared Element Transition) ============ -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lb-backdrop" id="lbBackdrop"></div>
+    <div class="lb-stage" id="lbStage">
+      <img class="lb-img" id="lbImg" src="" alt="">
+    </div>
+    <button class="lb-close" id="lbClose" aria-label="Close">
+      <span></span><span></span>
+    </button>
+    <div class="lb-caption" id="lbCaption">
+      <span class="lb-num"></span>
+      <span class="lb-cat"></span>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

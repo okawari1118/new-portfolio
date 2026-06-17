@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKAWA RYU — 大川 竜 / Programmer Portfolio</title>
+    <meta name="description" content="大川 竜 / OKAWA RYU — Front-End Programmer の制作実績ポートフォリオ。">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '"Noto Sans JP"', 'system-ui', 'sans-serif'],
+                        display: ['Anton', 'Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="antialiased is-loading">
+
+    <!-- ============ LOADER : Namecard "Now Printing" ============ -->
+    <div class="loader" id="loader" aria-hidden="false">
+        <div class="loader-pattern" aria-hidden="true"></div>
+
+        <div class="loader-content">
+            <span class="loader-tag">
+                <span class="loader-tag-dot"></span>
+                <span>NOW PRINTING</span>
+            </span>
+
+            <div class="loader-mark" aria-label="OKAWA RYU">
+                <span class="loader-letter">O</span><span class="loader-letter">K</span><span class="loader-letter">A</span><span class="loader-letter">W</span><span class="loader-letter">A</span><span class="loader-sp"></span><span class="loader-letter">R</span><span class="loader-letter">Y</span><span class="loader-letter">U</span>
+            </div>
+
+            <div class="loader-jp">
+                <span class="loader-jp-text">大川 竜</span>
+                <span class="loader-jp-divider"></span>
+                <span class="loader-jp-role">★ PROGRAMMER</span>
+            </div>
+
+            <div class="loader-progress">
+                <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+                <div class="loader-meta">
+                    <span>LOADING</span>
+                    <span class="loader-percent" id="loaderPercent">000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="loader-foot" aria-hidden="true">
+            <span>Okawa Ryu</span>
+            <span class="lf-sep">|</span>
+            <span>Portfolio · 2026</span>
+            <span class="lf-sep">|</span>
+            <span>scan / select</span>
+        </div>
+    </div>
+
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="paper-grid" aria-hidden="true"></div>
+    <div class="paper-noise" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a href="#hero" class="brand">
+            <span class="brand-mark" aria-hidden="true">
+                <span class="px"></span><span class="px"></span><span class="px"></span>
+                <span class="px"></span><span class="px on"></span><span class="px"></span>
+                <span class="px"></span><span class="px"></span><span class="px"></span>
+            </span>
+            <span class="brand-name">OKAWA RYU</span>
+            <span class="brand-sub">大川 竜</span>
+        </a>
+        <nav class="header-nav hidden md:flex">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#works" class="nav-link">Works</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <a href="../" class="nav-link nav-cross">Index ↗</a>
+        </nav>
+        <a href="#contact" class="md:hidden contact-pill">Contact</a>
+    </header>
+
+    <main>
+
+        <section id="hero" class="hero">
+
+            <div class="hero-spine" aria-hidden="true">
+                <h1 class="spine-text">OKAWA<br>RYU</h1>
+            </div>
+
+            <div class="hero-content">
+
+                <div class="hero-meta reveal">
+                    <span class="hero-meta-tick"></span>
+                    <span>Portfolio · 2026</span>
+                    <span class="hero-meta-divider">/</span>
+                    <span>Available for projects</span>
+                </div>
+
+                <p class="hero-jp reveal">大川 竜</p>
+                <p class="hero-role reveal">
+                    <span class="role-mark">★</span>
+                    PROGRAMMER
+                </p>
+                <p class="hero-role-sub reveal">FRONT-END · WEB · AI</p>
+
+                <div class="hero-bubble-row reveal">
+                    <span class="bubble bubble--ink">Hello.</span>
+                    <span class="bubble bubble--paper">よろしくお願いします</span>
+                </div>
+
+                <p class="hero-desc reveal">
+                    インタラクションとパフォーマンスにこだわった、<br>
+                    心地よいウェブ体験を設計するフロントエンドプログラマーです。
+                </p>
+
+                <div class="hero-cta reveal">
+                    <a href="#works" class="btn-primary magnetic">
+                        <span>View Works</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="#contact" class="btn-ghost magnetic">Get in touch</a>
+                </div>
+
+            </div>
+
+            <div class="hero-foot" aria-hidden="true">
+                <div class="hero-foot-inner">
+                    <span class="hf-key">Okawa Ryu</span>
+                    <span class="hf-sep">|</span>
+                    <span><span class="hf-label">Instagram</span> @okawa.ryu</span>
+                    <span class="hf-sep">|</span>
+                    <span><span class="hf-label">mail</span> hello@okawaryu.dev</span>
+                    <span class="hf-sep">|</span>
+                    <span><span class="hf-label">site</span> https://okawaryu.dev</span>
+                </div>
+            </div>
+
+            <div class="hero-corner-icon" aria-hidden="true">
+                <div class="pixel-face">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span class="on"></span><span></span><span class="on"></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span class="on"></span><span></span><span class="on"></span><span></span>
+                    <span></span><span></span><span class="on"></span><span></span><span></span>
+                </div>
+                <span class="pixel-label">アイコン</span>
+            </div>
+
+            <div class="scroll-cue" aria-hidden="true">
+                <span>SCROLL</span>
+                <span class="scroll-cue-line"></span>
+            </div>
+        </section>
+
+        <section id="about" class="section section-light">
+            <div class="container">
+
+                <div class="section-head reveal">
+                    <span class="bubble bubble--ink bubble--lg">About</span>
+                    <span class="section-num">— 01 / 自己紹介</span>
+                </div>
+
+                <h2 class="section-title reveal">
+                    Crafting digital<br>
+                    <span class="title-stroke">experiences since 2019.</span>
+                </h2>
+
+                <div class="bento-grid">
+
+                    <div class="note-card note-profile reveal">
+                        <span class="card-stamp">PROFILE / 01</span>
+                        <span class="card-corner-tag">名刺</span>
+                        <div class="profile-jp-row">
+                            <span class="profile-jp-text">大川 竜</span>
+                            <span class="profile-en-tag">OKAWA RYU</span>
+                        </div>
+                        <div class="profile-role-block">
+                            <span class="role-mark">★</span>
+                            <span class="role-text">PROGRAMMER</span>
+                        </div>
+                        <p class="profile-desc">
+                            東京を拠点に活動するフロントエンドプログラマー。Web制作・データ可視化・AI活用までを横断し、ユーザーが直感的に使える体験を設計しています。
+                        </p>
+                        <div class="profile-meta">
+                            <div>
+                                <span class="meta-label">Based in</span>
+                                <span class="meta-value">Tokyo, JP</span>
+                            </div>
+                            <div>
+                                <span class="meta-label">Timezone</span>
+                                <span class="meta-value">UTC+9</span>
+                            </div>
+                            <div>
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value status-open">Open</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-stat reveal">
+                        <span class="meta-label">Experience</span>
+                        <div class="stat-value">
+                            <span class="stat-num">7</span><span class="stat-unit">yrs</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-stat reveal">
+                        <span class="meta-label">Projects</span>
+                        <div class="stat-value">
+                            <span class="stat-num">120</span><span class="stat-unit">+</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-stack reveal">
+                        <div class="stack-head">
+                            <span class="bubble bubble--ink">Skill</span>
+                        </div>
+                        <div class="skill-cloud">
+                            <span class="skill-pill">TypeScript</span>
+                            <span class="skill-pill">React</span>
+                            <span class="skill-pill">Next.js</span>
+                            <span class="skill-pill">GSAP</span>
+                            <span class="skill-pill">Tailwind</span>
+                            <span class="skill-pill">Three.js</span>
+                            <span class="skill-pill">Node.js</span>
+                            <span class="skill-pill">Figma</span>
+                            <span class="skill-pill">GA4</span>
+                            <span class="skill-pill">PHP</span>
+                            <span class="skill-pill">WordPress</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-github reveal">
+                        <div class="card-head-row">
+                            <span class="bubble bubble--ink">Activity</span>
+                            <span class="card-meta-num">1,284</span>
+                        </div>
+                        <div id="contrib-grid" aria-hidden="true"></div>
+                        <div class="contrib-legend">
+                            <span>Less</span>
+                            <span class="lvl lvl-0"></span>
+                            <span class="lvl lvl-1"></span>
+                            <span class="lvl lvl-2"></span>
+                            <span class="lvl lvl-3"></span>
+                            <span class="lvl lvl-4"></span>
+                            <span>More</span>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-now reveal">
+                        <div class="now-cover">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                            <span class="now-pulse"></span>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="now-label">Now Playing</p>
+                            <p class="now-title">Solar Power</p>
+                            <p class="now-artist">Lorde · Solar Power</p>
+                        </div>
+                    </div>
+
+                    <div class="note-card note-location reveal">
+                        <span class="meta-label">Located in</span>
+                        <h3 class="loc-title">Tokyo, JP</h3>
+                        <p class="loc-coord">35.6762°N · 139.6503°E</p>
+                        <span class="loc-pin"></span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="works" class="section section-ink">
+            <div class="container">
+                <div class="section-head reveal section-head-light">
+                    <span class="bubble bubble--paper bubble--lg">Works</span>
+                    <span class="section-num section-num-light">— 02 / 制作実績</span>
+                </div>
+                <h2 class="section-title section-title-light reveal">Selected Projects</h2>
+                <p class="section-lead reveal">直近の代表的な制作実績。スクロールで横に展開します。</p>
+            </div>
+
+            <div id="works-pin-wrap">
+                <div id="works-track">
+                    <div class="works-spacer-start" aria-hidden="true"></div>
+
+                    <article class="work-card"
+                             data-title="AI Chatbot"
+                             data-year="2025"
+                             data-category="AI · RAG"
+                             data-tech="TypeScript / React / Node.js / Google Gemini API"
+                             data-desc="社内問い合わせ対応を自動化するために開発。RAGアーキテクチャを採用し、社内ドキュメントに基づいた回答を実現。問い合わせ工数を30%削減しました。"
+                             data-url="#">
+                        <div class="work-card-img" style="background-image:url('mv1.webp')"></div>
+                        <div class="work-card-meta">
+                            <div class="work-card-top">
+                                <span class="work-tag">2025 / AI</span>
+                            </div>
+                            <div class="work-card-bottom">
+                                <div class="min-w-0">
+                                    <h3 class="work-card-title">AI Chatbot</h3>
+                                    <p class="work-card-desc">社内FAQ自動応答システム / RAG構成</p>
+                                </div>
+                                <span class="work-arrow" aria-hidden="true">
+                                    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="work-card"
+                             data-title="Front-End Development"
+                             data-year="2024"
+                             data-category="Web · LP"
+                             data-tech="HTML / CSS / WordPress / PHP / GSAP"
+                             data-desc="企業サイト / 採用サイト / ランディングページ制作。GSAPによる繊細なアニメーションとアクセシビリティを両立した、Core Web Vitalsスコア95+のサイト群を開発。"
+                             data-url="#">
+                        <div class="work-card-img" style="background-image:url('mv2.webp')"></div>
+                        <div class="work-card-meta">
+                            <div class="work-card-top">
+                                <span class="work-tag">2024 / Web</span>
+                            </div>
+                            <div class="work-card-bottom">
+                                <div class="min-w-0">
+                                    <h3 class="work-card-title">Front-End Dev</h3>
+                                    <p class="work-card-desc">企業サイト / LP制作 / GSAP演出</p>
+                                </div>
+                                <span class="work-arrow" aria-hidden="true">
+                                    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="work-card"
+                             data-title="Data Analysis Dashboard"
+                             data-year="2024"
+                             data-category="Data · BI"
+                             data-tech="GA4 / GTM / Looker Studio / BigQuery"
+                             data-desc="GA4 × Looker Studioによる行動データ可視化基盤を構築。GTMでのカスタムイベント設計から、経営層向けレポート自動配信まで一貫して担当。"
+                             data-url="#">
+                        <div class="work-card-img" style="background-image:url('mv3.webp')"></div>
+                        <div class="work-card-meta">
+                            <div class="work-card-top">
+                                <span class="work-tag">2024 / Data</span>
+                            </div>
+                            <div class="work-card-bottom">
+                                <div class="min-w-0">
+                                    <h3 class="work-card-title">Data Dashboard</h3>
+                                    <p class="work-card-desc">GA4 × Looker Studio による可視化</p>
+                                </div>
+                                <span class="work-arrow" aria-hidden="true">
+                                    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="works-spacer-end" aria-hidden="true"></div>
+                </div>
+
+                <div class="works-progress" aria-hidden="true">
+                    <span id="works-current">01</span>
+                    <span class="works-progress-track"><span id="works-progress-bar"></span></span>
+                    <span id="works-total">03</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section section-light">
+            <div class="container container-narrow">
+
+                <div class="section-head reveal">
+                    <span class="bubble bubble--ink bubble--lg">Contact</span>
+                    <span class="section-num">— 03 / お問い合わせ</span>
+                </div>
+
+                <h2 class="section-title reveal">
+                    Let's build<br>
+                    <span class="title-stroke">something great.</span>
+                </h2>
+
+                <p class="section-lead reveal">
+                    お仕事のご相談やご質問は、下記フォームよりお気軽にご連絡ください。<br>
+                    通常24時間以内に返信いたします。
+                </p>
+
+                <form class="note-card contact-card reveal" action="#" method="post" novalidate>
+                    <span class="card-corner-tag">FORM</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="floating-field">
+                            <input type="text" id="name" name="name" placeholder=" " required autocomplete="name">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="floating-field">
+                            <input type="email" id="email" name="email" placeholder=" " required autocomplete="email">
+                            <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="floating-field mt-5">
+                        <textarea id="message" name="message" rows="5" placeholder=" " required></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                    <button type="submit" class="btn-primary magnetic mt-8">
+                        <span>Send Message</span>
+                        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </form>
+
+                <footer class="site-footer">
+                    <div class="footer-meta">
+                        <span class="footer-mono">&lt;/&gt;</span>
+                        <small>© 2026 OKAWA RYU · 大川 竜</small>
+                    </div>
+                    <a href="../" class="footer-cross">Other Portfolio ↗</a>
+                    <div class="footer-links">
+                        <a href="#" class="nav-link">GitHub</a>
+                        <a href="#" class="nav-link">Instagram</a>
+                        <a href="#" class="nav-link">X</a>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-card" id="modal-card" role="document">
+            <button id="close-modal" class="modal-close" aria-label="Close">
+                <svg width="14" height="14" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <span id="modal-tech" class="modal-tech"></span>
+            <h3 id="modal-title" class="modal-title"></h3>
+            <p id="modal-desc" class="modal-desc"></p>
+            <a id="modal-link" href="#" target="_blank" rel="noopener" class="btn-primary magnetic">
+                <span>Visit Project</span>
+                <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

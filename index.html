@@ -2,172 +2,131 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Front-End Engineer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c0d10">
+    <title>Portfolio · Index</title>
+    <meta name="description" content="ポートフォリオの入り口。Engineer と Model の2つのサイトをご覧いただけます。">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <main class="scroll-container">
+    <header class="site-header">
+        <a href="#" class="brand">
+            <span class="brand-dot" aria-hidden="true"></span>
+            <span class="brand-name">PORTFOLIO</span>
+            <span class="brand-sub">Index · 2026</span>
+        </a>
+        <div class="meta-row">
+            <span class="meta-num">02</span>
+            <span class="meta-divider"></span>
+            <span class="meta-label">SITES</span>
+        </div>
+    </header>
 
-        <section id="top" class="snap-area">
-            <div class="content-wrapper">
-                                <div class="catch-copy">
-                    <h1>Code Design<br>Consulting</h1>
-                    <p>Webの課題を技術で解決する</p>
-                </div>
-                <div class="vscode-window">
-                    <div class="vscode-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                        <span class="title">portfolio.js</span>
-                    </div>
-                    <div class="vscode-body">
-                        <pre><code id="typewriter-text"></code><span class="cursor active">|</span></pre>
-                    </div>
-                </div>
+    <main class="landing">
 
+        <section class="intro">
+            <p class="eyebrow"><span class="eyebrow-dot"></span>Welcome — 名刺をスキャンいただきありがとうございます</p>
+            <h1 class="intro-title">
+                <span class="line"><span>Choose</span></span>
+                <span class="line"><span><em>your</em></span></span>
+                <span class="line"><span>portfolio.</span></span>
+            </h1>
+            <p class="intro-desc">
+                2つのポートフォリオを公開しています。<br>
+                ご覧になりたい方をお選びください。
+            </p>
+            <div class="intro-foot">
+                <span>Tokyo, JP</span>
+                <span class="dot-sep"></span>
+                <span>UTC+9</span>
+                <span class="dot-sep"></span>
+                <span class="mono">scan / select</span>
             </div>
         </section>
 
-<section id="works" class="snap-area">
-    <h2 class="section-title">Works</h2>
-    
-<div class="horizontal-slider">
-        
-        <div class="project-slide" style="--bg-image: url('mv1.webp');">
-            <div class="slide-bg"></div>
-            <article class="work-bubble">
-<a href="#" class="open-modal-btn"
-           data-title="AI Chatbot"
-           data-tech="TypeScript / React / Node.js / Google Gemini API"
-           data-desc="社内問い合わせ対応を自動化するために開発。RAGアーキテクチャを採用し、社内ドキュメントに基づいた回答を実現。問い合わせ工数を30%削減しました。"
-           >
- <div class="bubble-overlay">
-                        <h3 class="work-title">AI Chatbot</h3>
-                        <p class="work-desc">社内FAQの自動応答システム</p>
-                        <p class="work-tech">TypeScript / React / Node.js / Google Gemini API</p>
-                        <span class="view-more">Hover to Scroll</span>
-                    </div>
-                </a>
-            </article>
-        </div>
+        <nav class="cards" aria-label="Portfolio entries">
 
-        <div class="project-slide" style="--bg-image: url('mv2.webp');">
-            <div class="slide-bg"></div>
-            <article class="work-bubble">
-<a href="#" class="open-modal-btn"
-           data-title="Front-End Dev"
-           data-tech="HTML / CSS / WP / PHP / GSAP"
-           data-desc="企業・採用サイト / LP制作"
-           data-url="https://github.com/your-repo">
+            <a href="/progtammer" class="card card-eng">
+                <div class="card-bg-pattern" aria-hidden="true"></div>
+                <div class="card-bg-tint" aria-hidden="true"></div>
 
-                    <div class="bubble-overlay">
-                        <h3 class="work-title">Front-End Dev</h3>
-                        <p class="work-desc">企業・採用サイト / LP制作</p>
-                        <p class="work-tech">HTML / CSS / WP / PHP / GSAP</p>
-                        <span class="view-more">Hover to Scroll</span>
-                    </div>
-                </a>
-            </article>
-        </div>
+                <header class="card-head">
+                    <span class="card-num">01</span>
+                    <span class="card-tag">PROGRAMMER</span>
+                </header>
 
-        <div class="project-slide" style="--bg-image: url('mv3.webp');">
-            <div class="slide-bg"></div>
-            <article class="work-bubble">
-<a href="#" class="open-modal-btn"
-           data-title="Data Analysis"
-           data-tech="GA4 / GTM / Looker Studio"
-           data-desc="GA4 × Looker Studioによる可視化"
-           >
-
-                    <div class="bubble-overlay">
-                        <h3 class="work-title">Data Analysis</h3>
-                        <p class="work-desc">GA4 × Looker Studioによる可視化</p>
-                        <p class="work-tech">GA4 / GTM / Looker Studio</p>
-                        <span class="view-more">Hover to Scroll</span>
-                    </div>
-                </a>
-            </article>
-        </div>
-
-    </div>
-
-<div id="project-modal" class="modal-overlay">
-    <div class="modal-content">
-        <button id="close-modal" class="close-btn">×</button>
-        
-        <div class="modal-header">
-            <h3 id="modal-title">Project Title</h3>
-            <p id="modal-tech">Tech Stack</p>
-        </div>
-        
-        <div class="modal-body">
-            <p id="modal-desc">Description goes here...</p>
-            
-            <div class="modal-links">
-                <a id="modal-link" href="#" target="_blank" class="modal-btn primary">Visit Website</a>
+                <div class="card-body">
+                    <p class="card-jp">大川 竜</p>
+                    <h2 class="card-en">RYU OKAWA</h2>
+                    <p class="card-role">★ FRONT-END · WEB · AI</p>
                 </div>
-        </div>
-    </div>
-</div>
 
+                <footer class="card-foot">
+                    <p class="card-desc">
+                        フロントエンドエンジニアの制作実績。<br>
+                        AI / Web / Data Visualization。
+                    </p>
+                    <span class="card-cta">
+                        <span class="cta-text">Enter Site</span>
+                        <span class="cta-icon" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 16 16"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </span>
+                </footer>
 
-<div class="slider-controls">
-        <div class="slide-counter">
-            <span id="current-slide">01</span>
-            <span class="divider">/</span>
-            <span id="total-slide">03</span>
-        </div>
-        
-        <button id="next-slide-btn" class="nav-arrow" aria-label="Next Project">
-            <span class="arrow-icon">→</span>
-        </button>
-    </div>
+                <span class="card-corner" aria-hidden="true">名刺</span>
+            </a>
 
-</section>
+            <a href="/model" class="card card-mdl">
+                <div class="card-bg-image" style="background-image:url('../mv1.webp')" aria-hidden="true"></div>
+                <div class="card-bg-tint card-bg-tint--dark" aria-hidden="true"></div>
 
-<section id="contact" class="snap-area">
-    <div class="contact-container">
-        <h2 class="section-title">Contact</h2>
-        <p class="contact-desc">お仕事のご相談やご質問は、<br>下記フォームよりお気軽にご連絡ください。</p>
+                <header class="card-head">
+                    <span class="card-num">02</span>
+                    <span class="card-tag card-tag--ghost">MODEL</span>
+                </header>
 
-        <form class="terminal-form" action="#" method="post">
-            
-            <div class="input-group">
-                <label for="name"><span class="prompt">user@name:~$</span> Name</label>
-                <input type="text" id="name" name="name" placeholder="お名前を入力してください" required>
-            </div>
+                <div class="card-body">
+                    <p class="card-jp">大川 竜</p>
+                    <h2 class="card-en card-en--serif">Ryu<br><em>Okawa</em></h2>
+                    <p class="card-role card-role--light">Editorial · Runway · Studio</p>
+                </div>
 
-            <div class="input-group">
-                <label for="email"><span class="prompt">user@email:~$</span> Email</label>
-                <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
-            </div>
+                <footer class="card-foot">
+                    <p class="card-desc card-desc--light">
+                        モデル・ポートフォリオ。<br>
+                        Fashion / Editorial / Runway。
+                    </p>
+                    <span class="card-cta card-cta--ghost">
+                        <span class="cta-text">Enter Site</span>
+                        <span class="cta-icon" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 16 16"><path d="M1 8h14M9 2l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </span>
+                </footer>
 
-            <div class="input-group">
-                <label for="message"><span class="prompt">user@msg:~$</span> Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="お問い合わせ内容を入力してください" required></textarea>
-            </div>
+                <span class="card-corner card-corner--serif" aria-hidden="true">portrait</span>
+            </a>
 
-            <button type="submit" class="submit-btn">
-                <span class="btn-text">Send Message</span>
-                <span class="btn-icon">→</span>
-            </button>
-        </form>
-    </div>
-    
-    <footer class="site-footer">
-        <small>&copy; 2025 Your Name. All Rights Reserved.</small>
-    </footer>
-</section>
+        </nav>
 
     </main>
-<nav class="dot-nav">
-        <a href="#top" class="nav-dot active" aria-label="Top"></a>
-        <a href="#works" class="nav-dot" aria-label="Works"></a>
-        <a href="#contact" class="nav-dot" aria-label="Contact"></a>
-    </nav>
-    <script src="main.js"></script>
+
+    <footer class="page-foot">
+        <span>© 2026 · Portfolio Index</span>
+        <span class="mono">Tokyo · Japan</span>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            requestAnimationFrame(() => document.body.classList.add('ready'));
+        });
+    </script>
+
 </body>
 </html>

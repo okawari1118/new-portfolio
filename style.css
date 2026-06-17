@@ -1,654 +1,535 @@
 /* =========================================
-   ベース設定
+   Tokens — shared with both portfolios
    ========================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --ink: #0c0d10;
+    --paper: #ffffff;
+    --bg: #f4f1ec;            /* neutral cream that bridges cyan + beige */
+    --bg-cyan: #b8dded;       /* engineer */
+    --bg-beige: #ebe7e0;      /* model */
+    --bg-deep: #1a1916;       /* model dark */
+    --accent-red: #e02d2d;    /* engineer accent */
+    --muted: rgba(12, 13, 16, 0.55);
+    --line: rgba(12, 13, 16, 0.14);
+
+    --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft:  cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* =========================================
+   Reset
+   ========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
 
 body {
-    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    color: #333;
-    overflow: hidden; /* body自体のスクロールは消す */
+    font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.005em;
+    min-height: 100dvh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--ink); color: #fff; }
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* =========================================
+   Header
+   ========================================= */
+.site-header {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    height: 68px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--ink);
+    mix-blend-mode: difference;
+    pointer-events: none;
+}
+.site-header > * { pointer-events: auto; }
+@media (min-width: 768px) {
+    .site-header { padding: 0 36px; height: 76px; }
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+}
+.brand-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fff;
+}
+.brand-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    color: #fff;
+}
+.brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.6);
+}
+@media (max-width: 540px) {
+    .brand-sub { display: none; }
+}
+
+.meta-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #fff;
+}
+.meta-num { font-weight: 500; }
+.meta-divider {
+    width: 18px; height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+}
+.meta-label { color: rgba(255,255,255,0.6); }
+
+/* =========================================
+   Layout
+   ========================================= */
+.landing {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
+    padding-top: 76px;
+    padding-bottom: 56px;
+}
+@media (min-width: 1024px) {
+    .landing {
+        grid-template-rows: 1fr;
+        grid-template-columns: minmax(320px, 32vw) 1fr;
+        padding-top: 0;
+    }
 }
 
 /* =========================================
-   フルページスクロール (縦)
+   Intro (left column on desktop, top on mobile)
    ========================================= */
-.scroll-container {
-height: 100dvh;
-    overflow-y: scroll; /* 縦スクロールを許可 */
-    scroll-snap-type: y mandatory; /* 縦スナップの魔法 */
-    scroll-behavior: smooth;
-}
-
-.snap-area {
-height: 100dvh;
-    width: 100%;
-    scroll-snap-align: start; /* スナップ位置 */
-    
-    /* コンテンツ配置 */
+.intro {
+    padding: 32px 22px 36px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    position: relative;
-    background-color: #f5f5f5;
+    justify-content: flex-end;
+    gap: 24px;
+}
+@media (min-width: 1024px) {
+    .intro {
+        padding: 100px 40px 40px;
+        min-height: 100dvh;
+        gap: 32px;
+        position: sticky;
+        top: 0;
+    }
 }
 
-/* 偶数セクションの背景色 */
-.snap-area:nth-child(even) {
-    background-color: #e0e0e0;
-}
-
-/* =========================================
-   TOPセクション (VS Code風エディタ)
-   ========================================= */
-#top .content-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    width: 90%;
-    max-width: 1200px;
-}
-
-/* エディタウィンドウ */
-.vscode-window {
-    flex: 1;
-    background-color: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    overflow: hidden;
-    width: 100%;
-    max-width: 600px;
-}
-
-/* ヘッダー */
-.vscode-header {
-    background-color: #252526;
-    padding: 10px;
-    display: flex;
+.eyebrow {
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    line-height: 1.6;
+    flex-wrap: wrap;
 }
-
-.dot {
-    width: 12px;
-    height: 12px;
+.eyebrow-dot {
+    width: 6px; height: 6px;
     border-radius: 50%;
-    display: inline-block;
+    background: var(--accent-red);
+    box-shadow: 0 0 0 3px rgba(224, 45, 45, 0.18);
+    animation: pulseDot 2s ease-in-out infinite;
 }
-.red { background-color: #ff5f56; }
-.yellow { background-color: #ffbd2e; }
-.green { background-color: #27c93f; }
-
-.title {
-    margin-left: 10px;
-    font-size: 14px;
-    color: #9aabbd;
-}
-
-/* ボディ */
-.vscode-body {
-    padding: 20px;
-    min-height: 200px;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-/* シンタックスハイライト */
-.keyword { color: #569cd6; }
-.variable { color: #9cdcfe; }
-.property { color: #9cdcfe; }
-.string { color: #ce9178; }
-.punctuation { color: #d4d4d4; }
-.comment { color: #6a9955; }
-
-/* カーソル */
-.cursor { color: #aeafad; }
-.cursor.active { animation: blink 1s step-end infinite; }
-
-@keyframes blink {
+@keyframes pulseDot {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    50%      { opacity: 0.5; }
 }
 
-/* キャッチコピー */
-.catch-copy { flex: 0.8; }
-.catch-copy h1 {
-    font-size: 3rem;
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-/* --- Worksセクション --- */
-#works {
-    padding: 0;
-    position: relative;
-    /* セクション自体は背景黒などにしておく */
-    background-color: #111;
-}
-
-/* タイトルを左上に固定（全スライド共通で見えるように） */
-#works .section-title {
-    position: absolute;
-    top: 30px;
-    left: 40px;
-    z-index: 20; /* 画像より手前 */
-    color: #fff;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    margin: 0;
-    font-size: 2rem;
-}
-
-/* 横スクロールコンテナ */
-.horizontal-slider {
-    width: 100%;
-    height: 100vh; /* 高さ100% */
+.intro-title {
+    font-family: 'Anton', 'Inter', sans-serif;
+    font-size: clamp(2.75rem, 7vw, 4.75rem);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
     display: flex;
-    
-    /* 横スクロールとスナップの設定 */
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    
-    /* 余白は不要（フルスクリーンなので） */
-    padding: 0;
-    gap: 0; /* 隙間なし */
-
-    cursor: grab;
-    scrollbar-width: none;
+    flex-direction: column;
 }
-.horizontal-slider::-webkit-scrollbar { display: none; }
-.horizontal-slider.active { cursor: grabbing; }
-
-
-/* --- 新しいスライド枠（画面サイズ） --- */
-.project-slide {
-    /* 画面いっぱいのサイズ */
-    width: 100vw;
-height: 100dvh;
-    flex: 0 0 auto; /* 縮まない */
-    
-    /* ここでスナップさせる */
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    
-    /* 中身（円）を中央寄せ */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    position: relative;
+.intro-title em {
+    font-family: 'Inter', serif;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent-red);
+    letter-spacing: -0.02em;
+    padding-left: 0.08em;
+}
+.intro-title .line {
+    display: block;
     overflow: hidden;
 }
+.intro-title .line > span {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 1s var(--ease-out);
+}
+.intro-title .line:nth-child(1) > span { transition-delay: 0.1s; }
+.intro-title .line:nth-child(2) > span { transition-delay: 0.22s; }
+.intro-title .line:nth-child(3) > span { transition-delay: 0.34s; }
+body.ready .intro-title .line > span { transform: translateY(0); }
 
-/* 背景用レイヤー（全画面に画像を敷いてぼかす演出） */
-.slide-bg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    
-    /* 親要素から変数を継承 */
-    background-image: var(--bg-image);
+.intro-desc {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--muted);
+    max-width: 360px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.9s var(--ease-out) 0.6s, transform 0.9s var(--ease-out) 0.6s;
+}
+body.ready .intro-desc { opacity: 1; transform: none; }
+
+.intro-foot {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.9s var(--ease-out) 0.8s;
+}
+body.ready .intro-foot { opacity: 1; }
+
+.dot-sep {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--muted);
+}
+
+/* =========================================
+   Cards
+   ========================================= */
+.cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 22px;
+}
+@media (min-width: 768px) {
+    .cards { gap: 18px; padding: 0 28px; }
+}
+@media (min-width: 1024px) {
+    .cards {
+        grid-template-columns: 1fr 1fr;
+        padding: 28px 36px 28px 0;
+        height: calc(100dvh - 56px);
+    }
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 24px;
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 460px;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    transition:
+        transform 0.6s var(--ease-spring),
+        box-shadow 0.6s var(--ease-out),
+        flex 0.7s var(--ease-out);
+    opacity: 0;
+    transform: translateY(40px);
+}
+body.ready .card { opacity: 1; transform: translateY(0); }
+body.ready .card-eng { transition-delay: 0.5s, 0.5s, 0s; }
+body.ready .card-mdl { transition-delay: 0.65s, 0.65s, 0s; }
+
+@media (min-width: 768px) {
+    .card { padding: 36px 32px; min-height: 520px; }
+}
+@media (min-width: 1024px) {
+    .card {
+        min-height: 0;
+        height: 100%;
+    }
+}
+
+.card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 8px 8px 0 var(--accent-red);
+}
+
+/* Engineer card — namecard cyan */
+.card-eng {
+    background: var(--bg-cyan);
+    color: var(--ink);
+}
+.card-eng .card-bg-pattern {
+    position: absolute; inset: 0; z-index: -2;
+    background-image: radial-gradient(rgba(12,13,16,0.08) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 100% 80% at 50% 40%, #000 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 40%, #000 60%, transparent 100%);
+}
+/* 背景レイヤーは両カード共通で絶対配置（フローから外す） */
+.card-bg-tint {
+    position: absolute; inset: 0; z-index: -1;
+}
+.card-eng .card-bg-tint {
+    background:
+        radial-gradient(60% 40% at 80% 20%, rgba(255,255,255,0.45), transparent 70%),
+        radial-gradient(50% 50% at 20% 100%, rgba(224, 45, 45, 0.08), transparent 70%);
+}
+
+/* Model card — editorial dark */
+.card-mdl {
+    background: var(--bg-deep);
+    color: #ebe7e0;
+    border-color: var(--bg-deep);
+}
+.card-mdl:hover { box-shadow: 8px 8px 0 #ebe7e0; }
+
+.card-bg-image {
+    position: absolute; inset: 0; z-index: -2;
     background-size: cover;
     background-position: center;
-    
-    /* 少し暗くしてぼかす（主役の円を目立たせるため） */
-    filter: blur(20px) brightness(0.6);
-    transform: scale(1.1); /* ぼかしの端が見えないように拡大 */
-    z-index: 1;
-}
-
-
-/* --- 円（バブル）本体 --- */
-.work-bubble {
-    /* サイズは維持 */
-    width: 70vh;
-    height: 70vh;
-    max-width: 80vw;
-    max-height: 80vw;
-    
-    border-radius: 50%;
-    /* 以前の margin や scroll-snap設定は親に移ったので不要 */
-    
-    /* 浮き上がるような影 */
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    
-    z-index: 2; /* 背景より手前 */
-    position: relative;
-    overflow: hidden;
-
-    /* 円の中の画像設定 */
-    background-image: var(--bg-image);
-    background-size: cover;
-    background-position: top center;
-    background-repeat: no-repeat;
-    
-    transition: background-position 4s ease-in-out, transform 0.3s ease;
-}
-
-/* ホバー時の動き（そのまま継承） */
-.work-bubble:hover {
-    background-position: bottom center;
     transform: scale(1.05);
+    transition: transform 1.2s var(--ease-out);
+    filter: grayscale(0.2) contrast(0.95) brightness(0.7);
+}
+.card-mdl:hover .card-bg-image { transform: scale(1.08); }
+
+.card-bg-tint--dark {
+    background:
+        linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.85) 100%);
 }
 
-/* オーバーレイなどは以前のままでOK */
-.bubble-overlay {
-    /* (以前のコードと同じ) */
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease;
-}
-.work-bubble:hover .bubble-overlay { opacity: 0; }
-
-/* スマホ対応 */
-@media (max-width: 768px) {
-    #works .section-title {
-        font-size: 1.5rem;
-        left: 20px;
-        top: 20px;
-    }
-    .work-bubble {
-        width: 70vw;
-        height: 70vw;
-    }
-}
-/* style.css の最後に追記してください */
-
-/* スライダーの中のリンクや画像は、ブラウザ標準のドラッグを禁止する */
-.work-bubble a,
-.work-bubble img {
-    -webkit-user-drag: none; /* Chrome, Safari */
-    user-drag: none; /* Standard (future) */
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none; /* テキスト選択も禁止 */
-}
-/* --- スライダーコントローラー --- */
-.slider-controls {
-    position: absolute;
-    bottom: 40px;
-    right: 40px; /* 右下に配置 */
-    z-index: 20; /* 画像より手前 */
+/* Card head */
+.card-head {
     display: flex;
     align-items: center;
-    gap: 20px;
-    color: #fff;
-    font-family: 'Consolas', monospace; /* 数字は等幅フォントがかっこいい */
+    justify-content: space-between;
 }
-
-/* カウンター (01 / 03) */
-.slide-counter {
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+.card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: inherit;
+    opacity: 0.8;
 }
-
-.divider {
-    opacity: 0.5;
-    font-size: 1rem;
-}
-
-/* 矢印ボタン */
-.nav-arrow {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-    
-    /* 呼吸するようなアニメーション（アフォーダンス） */
-    animation: pulseArrow 2s infinite;
-}
-
-.arrow-icon {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-}
-
-/* ホバー時の挙動 */
-.nav-arrow:hover {
-    background-color: #fff;
-    color: #333;
-    border-color: #fff;
-    animation: none; /* ホバー中は点滅を止める */
-}
-
-.nav-arrow:hover .arrow-icon {
-    transform: translateX(3px); /* 矢印が少し右に動く */
-}
-
-/* アニメーション定義 */
-@keyframes pulseArrow {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-}
-
-/* スマホ調整 */
-@media (max-width: 768px) {
-    .slider-controls {
-        bottom: 20px;
-        right: 20px;
-    }
-    .slide-counter {
-        font-size: 1rem;
-    }
-    .nav-arrow {
-        width: 40px;
-        height: 40px;
-    }
-}
-/* --- モーダルウィンドウ --- */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 200; /* 最前面 */
-    
-    /* グラスモーフィズム（すりガラス）背景 */
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    
-    /* 中央寄せ */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    /* アニメーション用 */
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease;
-}
-
-/* 表示時のクラス */
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* モーダルの中身 */
-.modal-content {
-    background: rgba(30, 30, 30, 0.9); /* VS Codeっぽいダーク色 */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: 90%;
-    max-width: 600px;
-    padding: 40px;
-    border-radius: 20px;
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    transform: scale(0.9);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* バネのような動き */
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1);
-}
-
-/* 閉じるボタン */
-.close-btn {
-    position: absolute;
-    top: 20px; right: 20px;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
-}
-
-/* テキストスタイル */
-#modal-title {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-#modal-tech {
-    color: #569cd6; /* 青色 */
-    font-family: 'Consolas', monospace;
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-}
-
-#modal-desc {
-    color: #d4d4d4;
-    line-height: 1.8;
-    margin-bottom: 40px;
-    white-space: pre-wrap; /* 改行を反映させる */
-}
-
-/* リンクボタン */
-.modal-btn {
+.card-tag {
     display: inline-block;
-    background-color: #fff;
-    color: #000;
-    padding: 12px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.modal-btn:hover {
-    background-color: #e0e0e0;
-    transform: translateY(-2px);
-}
-
-/* --- Contact セクション --- */
-#contact {
-    /* サイトの最後なのでダークテーマで締める */
-    background-color: #1e1e1e; 
-    color: #d4d4d4;
-    position: relative;
-    /* フレックスで中央寄せ */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#contact .section-title {
-    /* 他のセクションと違い、ここは白文字 */
+    font-family: 'Anton', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--ink);
     color: #fff;
-    position: static; /* 固定配置を解除 */
-    margin-bottom: 20px;
 }
-
-.contact-desc {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 0.9rem;
-    color: #9aabbd;
-    line-height: 1.6;
-}
-
-.contact-container {
-    width: 90%;
-    max-width: 600px;
-    z-index: 10;
-}
-
-/* --- ターミナル風フォーム --- */
-.terminal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* ラベル（プロンプト風） */
-.input-group label {
-    font-family: 'Consolas', monospace;
-    font-size: 0.9rem;
-    color: #569cd6; /* 青色 */
-}
-
-.prompt {
-    color: #27c93f; /* 緑色 */
-    margin-right: 8px;
-}
-
-/* 入力エリア */
-.input-group input,
-.input-group textarea {
-    background-color: #252526; /* 少し明るいグレー */
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    padding: 12px 15px;
+.card-tag--ghost {
+    background: rgba(255,255,255,0.06);
     color: #fff;
-    font-size: 1rem;
-    font-family: inherit; /* 本文フォント継承 */
-    transition: border-color 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(8px);
 }
 
-/* フォーカス時の光る演出 */
-.input-group input:focus,
-.input-group textarea:focus {
-    outline: none;
-    border-color: #007acc; /* VS Codeのブルー */
-    box-shadow: 0 0 8px rgba(0, 122, 204, 0.5);
+/* Card body */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 36px 0;
+}
+.card-jp {
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    font-weight: 500;
+    color: rgba(12,13,16,0.7);
+}
+.card-mdl .card-jp { color: rgba(235,231,224,0.75); }
+
+.card-en {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin-top: 4px;
+    /* 2行分の高さを確保して、左右カードの名前ブロック位置を揃える
+       （Programmerは1行・Modelは2行だが両者のフォントサイズは同一） */
+    min-height: 1.9em;
+}
+.card-en--serif {
+    font-family: 'Noto Serif JP', 'Inter', serif;
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    color: #ebe7e0;
+    line-height: 0.95;
+}
+.card-en--serif em {
+    font-style: italic;
+    font-weight: 200;
+    color: rgba(235,231,224,0.78);
+    padding-left: 0.5em;
 }
 
-/* テキストエリアのリサイズ制限 */
-.input-group textarea {
-    resize: vertical;
-}
-
-/* 送信ボタン */
-.submit-btn {
+.card-role {
     margin-top: 10px;
-    background-color: #007acc;
-    color: #fff;
-    border: none;
-    padding: 15px;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    transition: background-color 0.3s, transform 0.1s;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--accent-red);
+    font-family: 'Anton', sans-serif;
+}
+.card-role--light {
+    color: rgba(235,231,224,0.7);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-size: 10px;
 }
 
-.submit-btn:hover {
-    background-color: #005a9e;
-}
-
-.submit-btn:active {
-    transform: scale(0.98);
-}
-
-/* フッター */
-.site-footer {
-    position: absolute;
-    bottom: 20px;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-
-/* --- ドットナビゲーション --- */
-.dot-nav {
-    position: fixed;
-    top: 50%;
-    right: 30px; /* 画面右端からの距離 */
-    transform: translateY(-50%);
+/* Card foot */
+.card-foot {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    z-index: 100; /* 全ての要素より手前に */
+    gap: 18px;
+    align-items: flex-start;
 }
 
-.nav-dot {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.3); /* 未選択時は半透明 */
+.card-desc {
+    font-size: 13px;
+    line-height: 1.85;
+    color: rgba(12,13,16,0.65);
+    max-width: 320px;
+}
+.card-desc--light { color: rgba(235,231,224,0.65); }
+
+.card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    font-family: 'Anton', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    background: var(--ink);
+    color: #fff;
+    transition: transform 0.4s var(--ease-spring), background 0.3s, color 0.3s, box-shadow 0.4s;
+}
+.card:hover .card-cta {
+    transform: translate(2px, 0);
+}
+.cta-icon {
+    display: inline-flex;
+    width: 22px; height: 22px;
     border-radius: 50%;
-    transition: background-color 0.3s, transform 0.3s;
-    border: 1px solid rgba(0, 0, 0, 0.1); /* 背景が白い時用の枠線 */
-    cursor: pointer;
+    background: rgba(255,255,255,0.18);
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s var(--ease-spring);
+}
+.card:hover .cta-icon {
+    transform: rotate(-12deg) scale(1.05);
 }
 
-/* 選択中のスタイル */
-.nav-dot.active {
-    background-color: #007acc; /* アクセントカラー（青） */
-    transform: scale(1.3); /* 少し大きく */
-    border: none;
+.card-cta--ghost {
+    background: transparent;
+    color: #ebe7e0;
+    border: 1.5px solid rgba(235,231,224,0.5);
+}
+.card-mdl:hover .card-cta--ghost {
+    background: #ebe7e0;
+    color: var(--bg-deep);
+    border-color: #ebe7e0;
 }
 
-/* 背景が暗いセクション（Works/Contact）での視認性確保のため、
-   mix-blend-modeを使う手もありますが、今回はシンプルに半透明白で対応 */
+/* Card corner stamp */
+.card-corner {
+    position: absolute;
+    top: 0; right: 28px;
+    background: var(--accent-red);
+    color: #fff;
+    font-family: 'Anton', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    padding: 4px 10px 5px;
+    border-radius: 0 0 6px 6px;
+}
+.card-corner--serif {
+    background: rgba(235,231,224,0.95);
+    color: var(--bg-deep);
+    font-family: 'Noto Serif JP', serif;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
 
+/* =========================================
+   Page footer
+   ========================================= */
+.page-foot {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    z-index: 50;
+    pointer-events: none;
+}
+.page-foot > * { pointer-events: auto; }
+@media (min-width: 768px) { .page-foot { padding: 0 36px; } }
 
-   /* --- スマホ専用調整 (画面幅768px以下) --- */
-@media (max-width: 768px) {
-    
-    /* TOP: 文字サイズを少し小さく */
-    .catch-copy h1 {
-        font-size: 2rem; /* PCだと3remだったのを小さく */
+/* =========================================
+   Reduced motion
+   ========================================= */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
-    .vscode-body{
-        font-size: 13px;
-    }
-    /* TOP: エディタと文字の隙間を詰める */
-    #top .content-wrapper {
-        gap: 20px;
-        width: 100%; /* 横幅いっぱい使う */
-        padding: 0 20px;
-        flex-direction: column;
-    }
-
-    /* Works: 円のサイズ調整 */
-    .work-bubble {
-        width: 80vw; /* 画面幅の80% */
-        height: 80vw; /* 正円にするため同じ値 */
-    }
-
-    /* Contact: フォームの横幅を広げる */
-    .contact-container {
-        width: 90%;
-    }
-    
-    /* Contact: タイトル位置調整 */
-    #contact .section-title {
-        margin-top: -20px; /* 少し上に詰める */
-    }
-
-    /* ナビゲーション: スマホでは邪魔なら消す、あるいは小さくする */
-    .dot-nav {
-        right: 15px; /* 端に寄せる */
-    }
-    .nav-dot {
-        width: 10px;
-        height: 10px;
-    }
+    body.ready .intro-title .line > span,
+    body.ready .card { transform: none; opacity: 1; }
 }
