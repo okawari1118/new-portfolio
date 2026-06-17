@@ -5,7 +5,7 @@
     --ink: #0c0d10;
     --paper: #ffffff;
     --bg: #f4f1ec;            /* neutral cream that bridges cyan + beige */
-    --bg-cyan: #b8dded;       /* engineer */
+    --bg-cyan: #0138EA;       /* engineer */
     --bg-beige: #e4e8f2;      /* model */
     --bg-deep: #1a1916;       /* model dark */
     --accent-red: #e02d2d;    /* engineer accent */
@@ -289,14 +289,15 @@ body.ready .card-mdl { transition-delay: 0.65s, 0.65s, 0s; }
     box-shadow: 8px 8px 0 var(--accent-red);
 }
 
-/* Engineer card — namecard cyan */
+/* Engineer card — deep blue */
 .card-eng {
     background: var(--bg-cyan);
-    color: var(--ink);
+    color: #f0f4ff;
+    border-color: rgba(240,244,255,0.25);
 }
 .card-eng .card-bg-pattern {
     position: absolute; inset: 0; z-index: -2;
-    background-image: radial-gradient(rgba(12,13,16,0.08) 1px, transparent 1.4px);
+    background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1.4px);
     background-size: 22px 22px;
     mask-image: radial-gradient(ellipse 100% 80% at 50% 40%, #000 60%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 40%, #000 60%, transparent 100%);
@@ -307,9 +308,17 @@ body.ready .card-mdl { transition-delay: 0.65s, 0.65s, 0s; }
 }
 .card-eng .card-bg-tint {
     background:
-        radial-gradient(60% 40% at 80% 20%, rgba(255,255,255,0.45), transparent 70%),
-        radial-gradient(50% 50% at 20% 100%, rgba(224, 45, 45, 0.08), transparent 70%);
+        radial-gradient(60% 40% at 80% 20%, rgba(255,255,255,0.12), transparent 70%),
+        radial-gradient(50% 50% at 20% 100%, rgba(224, 45, 45, 0.12), transparent 70%);
 }
+/* White-on-blue readability overrides */
+.card-eng .card-jp  { color: rgba(240,244,255,0.75); }
+.card-eng .card-en  { color: #f0f4ff; }
+.card-eng .card-num { color: rgba(240,244,255,0.7); }
+.card-eng .card-desc { color: rgba(240,244,255,0.72); }
+.card-eng .card-tag  { background: #f0f4ff; color: #0138EA; }
+.card-eng .card-cta  { background: #f0f4ff; color: #0138EA; }
+.card-eng:hover { box-shadow: 8px 8px 0 rgba(240,244,255,0.55); }
 
 /* Model card — editorial dark */
 .card-mdl {

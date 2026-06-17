@@ -5,11 +5,12 @@
     --bg: #0138EA;            /* namecard deep blue */
     --bg-deep: #0c0d10;       /* black for ink section */
     --paper: #ffffff;
-    --ink: #0c0d10;
-    --ink-soft: #4a5560;
-    --muted: rgba(12, 13, 16, 0.55);
-    --line: rgba(12, 13, 16, 0.18);
-    --line-soft: rgba(12, 13, 16, 0.1);
+    --ink: #f0f4ff;           /* near-white for blue bg */
+    --ink-dark: #0c0d10;      /* keep dark for paper elements */
+    --ink-soft: rgba(240,244,255,0.7);
+    --muted: rgba(240,244,255,0.48);
+    --line: rgba(240,244,255,0.18);
+    --line-soft: rgba(240,244,255,0.1);
     --accent: #e02d2d;        /* programmer red */
     --accent-blue: #1c4f72;
     --shadow-card: 4px 4px 0 rgba(12, 13, 16, 0.08), 0 18px 40px -20px rgba(12, 13, 16, 0.25);
@@ -64,7 +65,7 @@ body.is-loading {
 
 .loader-pattern {
     position: absolute; inset: 0;
-    background-image: radial-gradient(rgba(12,13,16,0.12) 1px, transparent 1.4px);
+    background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1.4px);
     background-size: 22px 22px;
     mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 55%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 55%, transparent 100%);
@@ -173,7 +174,7 @@ body.is-loading {
 .loader-bar {
     position: relative;
     height: 2px;
-    background: rgba(12,13,16,0.15);
+    background: rgba(240,244,255,0.18);
     overflow: hidden;
 }
 .loader-fill {
@@ -229,7 +230,7 @@ body.is-loading {
    ========================================= */
 .paper-grid {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image: radial-gradient(rgba(12,13,16,0.08) 1px, transparent 1.4px);
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1.4px);
     background-size: 22px 22px;
     background-position: 0 0;
     mask-image: radial-gradient(ellipse 100% 80% at 50% 40%, #000 60%, transparent 100%);
@@ -356,8 +357,8 @@ main { position: relative; z-index: 2; }
     border: 1.5px solid var(--ink);
 }
 .btn-primary {
-    background: var(--ink);
-    color: #fff;
+    background: #f0f4ff;
+    color: #0138EA;
     box-shadow: 4px 4px 0 var(--accent);
 }
 .btn-primary:hover {
@@ -369,9 +370,10 @@ main { position: relative; z-index: 2; }
 
 .btn-ghost {
     background: transparent;
-    color: var(--ink);
+    color: #f0f4ff;
+    border-color: rgba(240,244,255,0.55);
 }
-.btn-ghost:hover { background: var(--ink); color: #fff; }
+.btn-ghost:hover { background: #f0f4ff; color: #0138EA; }
 
 .magnetic { will-change: transform; }
 
@@ -382,8 +384,8 @@ main { position: relative; z-index: 2; }
     position: relative;
     display: inline-flex;
     align-items: center;
-    background: var(--ink);
-    color: #fff;
+    background: #f0f4ff;
+    color: #0138EA;
     padding: 7px 16px 8px;
     border-radius: 12px;
     font-weight: 800;
@@ -594,8 +596,8 @@ main { position: relative; z-index: 2; }
 }
 .hf-key { font-weight: 600; }
 .hf-label {
-    background: var(--ink);
-    color: var(--paper);
+    background: #f0f4ff;
+    color: #0138EA;
     padding: 2px 6px;
     margin-right: 6px;
     font-size: 9px;
@@ -682,7 +684,7 @@ main { position: relative; z-index: 2; }
 
 .section-light { background: transparent; color: var(--ink); }
 .section-ink {
-    background: var(--ink);
+    background: var(--bg-deep);
     color: #fff;
     margin: 0 -22px;
     padding-left: 22px;
@@ -844,8 +846,8 @@ main { position: relative; z-index: 2; }
     font-family: 'Anton', sans-serif;
     font-size: 14px;
     letter-spacing: 0.18em;
-    background: var(--ink);
-    color: #fff;
+    background: #f0f4ff;
+    color: #0138EA;
     padding: 5px 10px;
     border-radius: 6px;
 }
@@ -1371,3 +1373,36 @@ main { position: relative; z-index: 2; }
     }
     .reveal { opacity: 1; transform: none; }
 }
+
+/* =========================================
+   Blue-bg readability: restore dark tokens
+   inside white-paper elements
+   ========================================= */
+.note-card,
+.modal-card,
+.hero-meta,
+.loader-tag,
+.work-tag,
+.contact-pill {
+    --ink: #0c0d10;
+    --ink-soft: #4a5560;
+    --muted: rgba(12,13,16,0.55);
+    --line: rgba(12,13,16,0.18);
+    --line-soft: rgba(12,13,16,0.1);
+    color: #0c0d10;
+}
+
+/* Section-ink (dark works area): keep var overrides dark
+   so bubble--paper inside reads correctly */
+.section-ink {
+    --ink: #0c0d10;
+    --ink-soft: #4a5560;
+    --line: rgba(12,13,16,0.18);
+}
+/* But section-ink top-level text stays white */
+.section-ink > * { color: inherit; }
+
+/* Skill pills inside white note-card: already handled by note-card scope */
+
+/* Pixel face border on blue bg */
+.pixel-face { border-color: rgba(240,244,255,0.5); }
