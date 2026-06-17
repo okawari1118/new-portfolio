@@ -182,8 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ---------- Works horizontal pin scroll ---------- */
-    const track   = document.getElementById('works-track');
-    const pinWrap = document.getElementById('works-pin-wrap');
+    const track        = document.getElementById('works-track');
+    const pinWrap      = document.getElementById('works-pin-wrap');
+    const worksSection = document.getElementById('works');
     const worksProgressBar = document.getElementById('works-progress-bar');
     const worksCurrent     = document.getElementById('works-current');
     const worksTotal       = document.getElementById('works-total');
@@ -198,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             x: () => -getDistance(),
             ease: 'none',
             scrollTrigger: {
-                trigger: pinWrap,
+                trigger: worksSection || pinWrap,
                 pin: true,
                 start: 'top top',
                 end: () => '+=' + getDistance(),

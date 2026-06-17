@@ -412,13 +412,13 @@ main { position: relative; z-index: 2; }
 
 .bubble--paper {
     background: var(--paper);
-    color: var(--ink);
-    border: 1.5px solid var(--ink);
+    color: #0c0d10;
+    border: 1.5px solid rgba(12,13,16,0.25);
 }
 .bubble--paper::after {
     background: var(--paper);
-    border-right: 1.5px solid var(--ink);
-    border-bottom: 1.5px solid var(--ink);
+    border-right: 1.5px solid rgba(12,13,16,0.25);
+    border-bottom: 1.5px solid rgba(12,13,16,0.25);
     border-radius: 0 0 4px 0;
 }
 
