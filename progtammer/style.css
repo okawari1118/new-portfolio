@@ -2,7 +2,7 @@
    Tokens — namecard light theme
    ========================================= */
 :root {
-    --bg: #b8dded;            /* namecard cyan */
+    --bg: #0138EA;            /* namecard deep blue */
     --bg-deep: #0c0d10;       /* black for ink section */
     --paper: #ffffff;
     --ink: #0c0d10;
@@ -30,7 +30,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
-    letter-spacing: -0.005em;
+    letter-spacing: 0.01em;
 }
 
 ::selection { background: var(--ink); color: #fff; }
@@ -268,7 +268,7 @@ main { position: relative; z-index: 2; }
     border-bottom: 1px solid transparent;
 }
 .site-header.scrolled {
-    background: rgba(184, 221, 237, 0.85);
+    background: rgba(1, 56, 234, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom-color: var(--line);
@@ -453,7 +453,7 @@ main { position: relative; z-index: 2; }
     color: var(--ink);
     font-size: clamp(4.5rem, 14vw, 12rem);
     line-height: 0.85;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     transform: rotate(-90deg);
     transform-origin: center center;
     white-space: nowrap;
@@ -527,7 +527,7 @@ main { position: relative; z-index: 2; }
     font-family: 'Anton', 'Inter', sans-serif;
     font-size: clamp(2.75rem, 9vw, 7rem);
     line-height: 0.85;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     color: var(--ink);
     display: inline-flex;
     align-items: flex-start;
@@ -716,7 +716,7 @@ main { position: relative; z-index: 2; }
     font-weight: 400;
     font-size: clamp(2.5rem, 7vw, 5.5rem);
     line-height: 0.95;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
     color: var(--ink);
 }
 .section-title-light { color: #fff; }
@@ -897,7 +897,7 @@ main { position: relative; z-index: 2; }
     font-size: clamp(3.5rem, 7vw, 5.5rem);
     line-height: 0.9;
     color: var(--ink);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
 }
 .stat-unit {
     font-size: 1.5rem;
@@ -1132,7 +1132,7 @@ main { position: relative; z-index: 2; }
     font-family: 'Anton', sans-serif;
     font-size: clamp(1.75rem, 3.5vw, 2.5rem);
     line-height: 1;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
 }
 .work-card-desc {
     margin-top: 10px;
