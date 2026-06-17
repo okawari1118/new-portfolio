@@ -1185,6 +1185,22 @@ main { position: relative; z-index: 2; }
     }
 }
 
+/* Desktop: shrink works section so heading + cards + pagination fit within one viewport during pin */
+@media (min-width: 1024px) {
+    #works.section {
+        padding-top: 80px;
+        padding-bottom: 0;
+    }
+    #works #works-pin-wrap {
+        margin-top: 20px;
+        padding-bottom: 50px;
+    }
+    #works .work-card {
+        height: min(calc(100dvh - 360px), 520px);
+        min-height: 300px;
+    }
+}
+
 /* =========================================
    Contact
    ========================================= */
