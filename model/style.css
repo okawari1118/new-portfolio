@@ -602,6 +602,7 @@ body.is-loading { overflow: hidden; height: 100dvh; }
 
 .gallery-item {
   position: relative;
+  min-width: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transform: translateY(40px);
