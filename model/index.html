@@ -51,13 +51,18 @@
 
     <!-- ============ MAIN MOVIE ============ -->
     <section id="main-movie" class="section section-mv">
-      <div class="mv-media" id="mvMedia">
-        <video class="mv-video" autoplay muted loop playsinline poster="mv1.webp">
-          <source src="MV.mp4" type="video/mp4">
-        </video>
-        <img class="mv-fallback" src="mv1.webp" alt="">
-        <div class="mv-grain"></div>
-      </div>
+<div class="mv-media" id="mvMedia">
+  <!-- YouTubeプレイヤーが生成されるコンテナ -->
+  <div class="mv-video-wrapper">
+    <div id="youtube-player"></div>
+  </div>
+
+  <!-- フォールバック 兼 ロード中の静止画（16:9の画像が理想） -->
+  <img class="mv-fallback" src="mv1.webp" alt="メインビジュアル" loading="eager">
+  
+  <!-- 質感向上のためのグライン・オーバーレイ層 -->
+  <div class="mv-grain"></div>
+</div>
 
       <div class="mv-content" id="mvContent">
         <div class="mv-meta">

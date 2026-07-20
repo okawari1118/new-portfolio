@@ -1,5 +1,5 @@
 /* =========================================
-   Sakura Miya — Portfolio interactions
+   Sakura Miya — Portfolio interactions (Optimized)
    ========================================= */
 
 (() => {
@@ -11,21 +11,43 @@
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* =========================================================
-   * 1. Smooth (inertia) scroll  — desktop only
-   *    モバイルは iOS 標準の慣性が最も自然なのでネイティブに任せる
+   * 1. Smooth (inertia) scroll — Desktop only & Performance Optimized
    * ========================================================= */
   let scrollY = window.scrollY;
   let smoothY = scrollY;
+  let rafId = null;
+  let isScrolling = false;
 
   function rafScroll() {
     smoothY = lerp(smoothY, scrollY, 0.10);
-    if (Math.abs(smoothY - scrollY) < 0.05) smoothY = scrollY;
+    
+    if (Math.abs(smoothY - scrollY) < 0.05) {
+      smoothY = scrollY;
+      isScrolling = false;
+    }
+
     document.dispatchEvent(new CustomEvent('smoothscroll', { detail: { y: smoothY } }));
-    requestAnimationFrame(rafScroll);
+
+    if (isScrolling) {
+      rafId = requestAnimationFrame(rafScroll);
+    } else {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
   }
 
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
-  requestAnimationFrame(rafScroll);
+  // prefersReduced が有効な場合は、パララックス等の計算自体をスキップさせるためイベントのみ同期
+  window.addEventListener('scroll', () => {
+    scrollY = window.scrollY;
+    if (prefersReduced) {
+      document.dispatchEvent(new CustomEvent('smoothscroll', { detail: { y: scrollY } }));
+      return;
+    }
+    if (!isScrolling) {
+      isScrolling = true;
+      if (!rafId) rafId = requestAnimationFrame(rafScroll);
+    }
+  }, { passive: true });
 
   /* =========================================================
    * 2. Loader : Blur-to-Focus + progress
@@ -35,16 +57,16 @@
   const percent  = document.getElementById('loaderPercent');
 
   let progress = 0;
-  const minDuration = 1400; // ms — 演出のために最低でもこのぐらいは見せる
+  const minDuration = 1400;
   const startedAt   = performance.now();
 
   function tickLoader() {
     const elapsed = performance.now() - startedAt;
-    // ease-out 風に 0→100% へ
     const t = clamp(elapsed / minDuration, 0, 1);
     progress = Math.round((1 - Math.pow(1 - t, 2)) * 100);
-    fill.style.inset = `0 ${100 - progress}% 0 0`;
-    percent.textContent = String(progress).padStart(3, '0');
+    
+    if (fill) fill.style.inset = `0 ${100 - progress}% 0 0`;
+    if (percent) percent.textContent = String(progress).padStart(3, '0');
 
     if (progress < 100) {
       requestAnimationFrame(tickLoader);
@@ -57,13 +79,11 @@
     document.body.classList.add('is-loaded');
     document.body.classList.remove('is-loading');
     setTimeout(() => {
-      loader.classList.add('gone');
-      // MV のタイトルアニメをトリガするためにスクロールイベントを発火
+      if (loader) loader.classList.add('gone');
       window.dispatchEvent(new Event('scroll'));
     }, 1000);
   }
 
-  // フォント読み込みなど待つ
   if (document.readyState === 'complete') {
     requestAnimationFrame(tickLoader);
   } else {
@@ -77,7 +97,6 @@
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('in-view');
-        // 一度きり
         io.unobserve(entry.target);
       }
     });
@@ -93,12 +112,11 @@
   const mvContent = document.getElementById('mvContent');
 
   function updateMV(y) {
-    if (!mvSection) return;
+    if (!mvSection || !mvMedia || !mvContent || prefersReduced) return;
     const h = mvSection.offsetHeight;
     const t = clamp(y / h, 0, 1);
 
-    // 動画は少しずつ上へスライド + フェード
-    const translateMedia  = -t * 80;        // px
+    const translateMedia  = -t * 80;
     const translateContent = -t * 140;
     const opacity = 1 - t * 1.1;
 
@@ -112,20 +130,18 @@
 
   /* =========================================================
    * 5. Gallery — column parallax
-   *    左右のカラムでわずかに速度を変えて立体感
    * ========================================================= */
   const galleryItems = document.querySelectorAll('.gallery-item');
   const galleryGrid  = document.getElementById('galleryGrid');
 
   function updateGallery(y) {
-    if (!galleryGrid) return;
+    if (!galleryGrid || galleryItems.length === 0 || prefersReduced) return;
     const rect = galleryGrid.getBoundingClientRect();
     const vh   = window.innerHeight;
     if (rect.bottom < 0 || rect.top > vh) return;
 
-    // -1 (画面下) から +1 (画面上) の進行度
     const progress = (vh - rect.top) / (vh + rect.height);
-    const offset   = (progress - 0.5) * 80; // -40 〜 +40 px
+    const offset   = (progress - 0.5) * 80;
 
     galleryItems.forEach(item => {
       const isLeft = item.classList.contains('col-l');
@@ -138,35 +154,38 @@
   document.addEventListener('smoothscroll', (e) => updateGallery(e.detail.y));
 
   /* =========================================================
-   * 6. Lightbox — Shared Element Transition + Swipe-to-close
+   * 6. Lightbox — Shared Element Transition + Dynamic Listeners
    * ========================================================= */
-  const lightbox  = document.getElementById('lightbox');
-  const lbStage   = document.getElementById('lbStage');
-  const lbImg     = document.getElementById('lbImg');
-  const lbClose   = document.getElementById('lbClose');
-  const lbCaption = document.getElementById('lbCaption');
-  const lbBackdrop= document.getElementById('lbBackdrop');
+  const lightbox   = document.getElementById('lightbox');
+  const lbStage    = document.getElementById('lbStage');
+  const lbImg      = document.getElementById('lbImg');
+  const lbClose    = document.getElementById('lbClose');
+  const lbCaption  = document.getElementById('lbCaption');
+  const lbBackdrop = document.getElementById('lbBackdrop');
 
   let activeThumb = null;
   let isOpen      = false;
+  let dragStartY  = 0;
+  let dragDelta   = 0;
+  let dragging    = false;
 
   function getTargetRect() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    // 画像のアスペクト比に応じて 90vmin に内接
     const imgRatio = lbImg.naturalWidth / lbImg.naturalHeight || 0.8;
     const maxW = vw * 0.92;
     const maxH = vh * 0.86;
     let w = maxW, h = w / imgRatio;
     if (h > maxH) { h = maxH; w = h * imgRatio; }
     return {
-      top:  (vh - h) / 2,
-      left: (vw - w) / 2,
+      top:   (vh - h) / 2,
+      left:  (vw - w) / 2,
       width: w, height: h
     };
   }
 
   function setStageRect(rect) {
+    if (!lbStage) return;
     lbStage.style.top    = rect.top    + 'px';
     lbStage.style.left   = rect.left   + 'px';
     lbStage.style.width  = rect.width  + 'px';
@@ -174,33 +193,33 @@
   }
 
   function openLightbox(thumb) {
-    if (isOpen) return;
+    if (isOpen || !lightbox || !lbStage || !lbImg) return;
     activeThumb = thumb;
     const innerImg = thumb.querySelector('img');
+    if (!innerImg) return;
+    
     const rect = innerImg.getBoundingClientRect();
-
-    // 0. 画像を差し替え
     lbImg.src = innerImg.currentSrc || innerImg.src;
 
-    // キャプション
-    const num = thumb.querySelector('.gi-num')?.textContent || '';
-    const cat = thumb.querySelector('.gi-cat')?.textContent || '';
-    lbCaption.querySelector('.lb-num').textContent = num;
-    lbCaption.querySelector('.lb-cat').textContent = cat;
+    if (lbCaption) {
+      const num = thumb.querySelector('.gi-num')?.textContent || '';
+      const cat = thumb.querySelector('.gi-cat')?.textContent || '';
+      const numEl = lbCaption.querySelector('.lb-num');
+      const catEl = lbCaption.querySelector('.lb-cat');
+      if (numEl) numEl.textContent = num;
+      if (catEl) catEl.textContent = cat;
+    }
 
-    // 1. 開始位置（サムネと同じ場所）にステージを置く
     lbStage.style.transition = 'none';
     setStageRect({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
 
-    // サムネを一時的に隠す（消えた感を出す）
     innerImg.style.opacity = '0';
 
-    // 2. 次のフレームでフルスクリーン位置へアニメ
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        lbStage.style.transition = '';
+        lbStage.style.transition = prefersReduced ? 'none' : '';
         setStageRect(getTargetRect());
       });
     });
@@ -209,61 +228,69 @@
   }
 
   function closeLightbox() {
-    if (!isOpen || !activeThumb) return;
+    if (!isOpen || !activeThumb || !lightbox || !lbStage) return;
     const innerImg = activeThumb.querySelector('img');
-    const rect = innerImg.getBoundingClientRect();
+    const rect = innerImg ? innerImg.getBoundingClientRect() : { top: 0, left: 0, width: 0, height: 0 };
 
     lightbox.classList.add('is-closing');
     lightbox.classList.remove('is-dragging');
 
-    // 元の場所へ縮小
-    lbStage.style.transition = '';
+    lbStage.style.transition = prefersReduced ? 'none' : '';
     lbStage.style.transform  = '';
-    setStageRect({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+    
+    if (innerImg) {
+      setStageRect({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+    }
 
     setTimeout(() => {
       lightbox.classList.remove('is-open', 'is-closing');
       lbStage.style.transition = 'none';
       lbStage.style.transform  = '';
       lbImg.src = '';
-      innerImg.style.opacity = '';
+      if (innerImg) innerImg.style.opacity = '';
       document.body.style.overflow = '';
+      if (lbBackdrop) lbBackdrop.style.opacity = '';
       isOpen = false;
       activeThumb = null;
-    }, 600);
+    }, prefersReduced ? 0 : 600);
   }
 
   galleryItems.forEach(item => {
     item.addEventListener('click', () => openLightbox(item));
   });
-  lbClose.addEventListener('click', closeLightbox);
-  lbBackdrop.addEventListener('click', closeLightbox);
+  
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbBackdrop) lbBackdrop.addEventListener('click', closeLightbox);
+  
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeLightbox();
   });
 
-  /* ----- Swipe-to-close (drag down) ----- */
-  let dragStartY = 0;
-  let dragDelta  = 0;
-  let dragging   = false;
-
+  /* ----- Swipe-to-close (Optimized Event Listeners) ----- */
   const onPointerDown = (e) => {
     if (!isOpen) return;
-    // クローズボタン上では発動しない
     if (e.target.closest('.lb-close')) return;
     dragging = true;
     dragStartY = (e.touches ? e.touches[0].clientY : e.clientY);
     dragDelta = 0;
     lightbox.classList.add('is-dragging');
+
+    // ドラッグ開始時のみイベントをwindowに登録
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('mouseup', onPointerUp);
+    window.addEventListener('touchend', onPointerUp);
   };
 
   const onPointerMove = (e) => {
-    if (!dragging) return;
+    if (!dragging || !lbStage || !lbBackdrop) return;
     const y = (e.touches ? e.touches[0].clientY : e.clientY);
     dragDelta = y - dragStartY;
-    if (dragDelta < 0) dragDelta = dragDelta * 0.3; // 上方向は重く
-    const scale  = clamp(1 - Math.abs(dragDelta) / 1200, 0.7, 1);
-    const opa    = clamp(1 - Math.abs(dragDelta) / 600, 0.2, 1);
+    if (dragDelta < 0) dragDelta = dragDelta * 0.3; // 上方向の抵抗
+    
+    const scale = clamp(1 - Math.abs(dragDelta) / 1200, 0.7, 1);
+    const opa   = clamp(1 - Math.abs(dragDelta) / 600, 0.2, 1);
+    
     lbStage.style.transform   = `translate3d(0, ${dragDelta}px, 0) scale(${scale})`;
     lbBackdrop.style.opacity  = String(opa);
   };
@@ -271,30 +298,39 @@
   const onPointerUp = () => {
     if (!dragging) return;
     dragging = false;
-    lightbox.classList.remove('is-dragging');
+    if (lightbox) lightbox.classList.remove('is-dragging');
+
+    // 不要になったグローバルイベントリスナーを即座に破棄
+    window.removeEventListener('mousemove', onPointerMove);
+    window.removeEventListener('touchmove', onPointerMove);
+    window.removeEventListener('mouseup', onPointerUp);
+    window.removeEventListener('touchend', onPointerUp);
 
     if (Math.abs(dragDelta) > 120) {
-      // しきい値を超えたら閉じる
       closeLightbox();
     } else {
-      // 元に戻す
-      lbStage.style.transition = '';
-      lbStage.style.transform  = '';
-      lbBackdrop.style.opacity = '';
+      if (lbStage) {
+        lbStage.style.transition = '';
+        lbStage.style.transform  = '';
+      }
+      if (lbBackdrop) lbBackdrop.style.opacity = '';
     }
     dragDelta = 0;
   };
 
-  lbStage.addEventListener('touchstart', onPointerDown, { passive: true });
-  lbStage.addEventListener('touchmove',  onPointerMove,  { passive: true });
-  lbStage.addEventListener('touchend',   onPointerUp);
-  lbStage.addEventListener('mousedown',  onPointerDown);
-  window.addEventListener('mousemove',   onPointerMove);
-  window.addEventListener('mouseup',     onPointerUp);
+  if (lbStage) {
+    lbStage.addEventListener('touchstart', onPointerDown, { passive: true });
+    lbStage.addEventListener('mousedown', onPointerDown);
+  }
 
-  /* リサイズで開いている時は中央へ再配置 */
+  // リサイズハンドラのデバウンス処理（簡易版）
+  let resizeTimeout;
   window.addEventListener('resize', () => {
-    if (isOpen && !dragging) setStageRect(getTargetRect());
+    if (!isOpen || dragging) return;
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      setStageRect(getTargetRect());
+    }, 100);
   });
 
   /* =========================================================
@@ -313,3 +349,56 @@
   });
 
 })();
+
+
+
+
+// 1. YouTube Player API のコードを非同期で読み込む
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+let player;
+const videoId = '_CpqAbHwPK0'; // ★ここにYouTubeの動画IDを入力
+
+// 2. APIの読み込みが完了したら自動的に呼ばれる関数
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('youtube-player', {
+    videoId: videoId,
+    playerVars: {
+      'autoplay': 1,       // 自動再生
+      'mute': 1,           // ミュート（自動再生の必須条件）
+      'loop': 1,           // ループ再生（playlist指定と組み合わせる）
+      'playlist': videoId, // ループさせるために同じ動画IDを指定
+      'controls': 0,       // コントローラー非表示
+      'disablekb': 1,      // キーボード操作を無効化
+      'fs': 0,             // 全画面表示ボタンを非表示
+      'iv_load_policy': 3, // アノテーション（注釈）を非表示
+      'rel': 0,            // 関連動画を非表示
+      'showinfo': 0,       // 動画情報を非表示（廃止気味ですが念のため）
+      'modestbranding': 1  // YouTubeロゴを控えめにする
+    },
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+
+// 3. プレイヤーの準備が整ったとき
+function onPlayerReady(event) {
+  event.target.mute(); // 確実にミュートにする
+  event.target.playVideo(); // 再生開始
+}
+
+// 4. プレイヤーの状態が変化したとき（チラつき防止の肝）
+function onPlayerStateChange(event) {
+  const wrapper = document.querySelector('.mv-video-wrapper');
+  
+  // event.data === 1 は「再生中（YT.PlayerState.PLAYING）」
+  if (event.data === YT.PlayerState.PLAYING) {
+    // 再生が確実に始まってからクラスを付与し、フェードインさせる
+    wrapper.classList.add('is-playing');
+  }
+}

@@ -298,7 +298,7 @@ body.is-loading { overflow: hidden; height: 100dvh; }
 .reveal.in-view { opacity: 1; transform: none; }
 
 /* =========================================
-   Main Movie
+   Main Movie (YouTube Player API 調整済み)
 ========================================= */
 .section-mv {
   height: 100dvh;
@@ -315,26 +315,60 @@ body.is-loading { overflow: hidden; height: 100dvh; }
   overflow: hidden;
   will-change: transform, opacity;
 }
-.mv-video, .mv-fallback {
+
+/* YouTubeプレイヤーを包むラッパー（16:9比率を保って最小全画面カバー） */
+.mv-video-wrapper {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0; /* 最初は非表示（黒画面・チラつき防止） */
+  z-index: 2;
+  transition: opacity .8s var(--ease-out);
+}
+.mv-video-wrapper.is-playing {
+  opacity: 1; /* 再生が始まったらフェードイン */
+}
+
+/* iframeをアスペクト比16:9を維持したまま拡大（object-fit: coverの挙動を再現） */
+.mv-video-wrapper iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* 100 * 9 / 16 */
+  min-height: 100vh;
+  min-width: 177.78vh; /* 100 * 16 / 9 */
+  transform: translate(-50%, -50%);
+}
+
+/* フォールバック 兼 ロード中の静止画 */
+.mv-fallback {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  z-index: 1;
+  transition: opacity .8s var(--ease-out);
 }
-.mv-fallback { z-index: 0; }
-.mv-video    { z-index: 1; }
+/* 動画の再生が始まったら、静止画を滑らかに消す */
+.mv-video-wrapper.is-playing + .mv-fallback {
+  opacity: 0;
+}
+
 .mv-media::after {
-  /* シネマティックなトーンダウン */
+  /* シネマティックなトーンダウン（動画と静止画の上に重ねる） */
   content: "";
   position: absolute; inset: 0;
   background:
     linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 100%),
     rgba(20,18,15,.20);
-  z-index: 2;
+  z-index: 3;
 }
 
-/* 粒子感 */
+/* 粒子感（最前面に重ねて圧縮ノイズを隠蔽） */
 .mv-grain {
-  position: absolute; inset: 0; z-index: 3;
+  position: absolute; inset: 0; 
+  z-index: 4;
   pointer-events: none;
   opacity: .08;
   mix-blend-mode: overlay;
@@ -346,7 +380,7 @@ body.is-loading { overflow: hidden; height: 100dvh; }
 }
 
 .mv-content {
-  position: relative; z-index: 4;
+  position: relative; z-index: 5; /* メディアオーバーレイ層の上に配置 */
   height: 100%;
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 0 var(--pad-x) clamp(56px, 12vh, 110px);
@@ -399,7 +433,7 @@ body.is-loading { overflow: hidden; height: 100dvh; }
 
 .mv-scroll-hint {
   position: absolute; bottom: 26px; right: var(--pad-x);
-  z-index: 4;
+  z-index: 5;
   display: flex; align-items: center; gap: 12px;
   font-size: 10px; letter-spacing: .35em;
   color: rgba(255,255,255,.65);
@@ -711,7 +745,7 @@ body.is-loading { overflow: hidden; height: 100dvh; }
 }
 .footer-cross {
   font-family: var(--font-serif);
-  font-size: 11px;
+  font-weight: 11px;
   letter-spacing: .15em;
   color: rgba(228,232,242,.7);
   border-bottom: 1px solid rgba(228,232,242,.25);
