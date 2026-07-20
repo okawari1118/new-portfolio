@@ -377,7 +377,8 @@ function onYouTubeIframeAPIReady() {
       'iv_load_policy': 3, // アノテーション（注釈）を非表示
       'rel': 0,            // 関連動画を非表示
       'showinfo': 0,       // 動画情報を非表示（廃止気味ですが念のため）
-      'modestbranding': 1  // YouTubeロゴを控えめにする
+      'modestbranding': 1, // YouTubeロゴを控えめにする
+      'playsinline': 1     // iOS Safariでインライン再生（再生ボタンの表示を防ぐ）
     },
     events: {
       'onReady': onPlayerReady,
