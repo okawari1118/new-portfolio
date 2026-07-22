@@ -297,4 +297,49 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    /* ---------- Contact form (Resend via /api/contact) ---------- */
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        const statusEl = document.getElementById('form-status');
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name    = contactForm.name.value.trim();
+            const email   = contactForm.email.value.trim();
+            const message = contactForm.message.value.trim();
+
+            if (statusEl) {
+                statusEl.textContent = '';
+                statusEl.classList.remove('is-success', 'is-error');
+            }
+            if (submitBtn) submitBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message }),
+                });
+                const data = await res.json().catch(() => ({}));
+
+                if (!res.ok) throw new Error(data.error || '送信に失敗しました。');
+
+                if (statusEl) {
+                    statusEl.textContent = 'メッセージを送信しました。ご連絡ありがとうございます。';
+                    statusEl.classList.add('is-success');
+                }
+                contactForm.reset();
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = err.message || '送信に失敗しました。時間をおいて再度お試しください。';
+                    statusEl.classList.add('is-error');
+                }
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        });
+    }
 });

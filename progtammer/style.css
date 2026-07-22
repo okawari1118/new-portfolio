@@ -11,7 +11,7 @@
     --muted: rgba(240,244,255,0.48);
     --line: rgba(240,244,255,0.18);
     --line-soft: rgba(240,244,255,0.1);
-    --accent: #e02d2d;        /* programmer red */
+    --accent: #e02d2d;        /* engineer red */
     --accent-blue: #1c4f72;
     --shadow-card: 4px 4px 0 rgba(12, 13, 16, 0.08), 0 18px 40px -20px rgba(12, 13, 16, 0.25);
 }
@@ -1252,6 +1252,15 @@ main { position: relative; z-index: 2; }
     color: var(--ink);
     font-weight: 700;
 }
+
+.form-status {
+    min-height: 20px;
+    margin-top: 18px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.form-status.is-success { color: #1e7a34; }
+.form-status.is-error   { color: #c0392b; }
 
 /* =========================================
    Footer

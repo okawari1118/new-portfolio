@@ -397,7 +397,7 @@ body.ready .card-mdl { transition-delay: 0.65s, 0.65s, 0s; }
     color: var(--ink);
     margin-top: 4px;
     /* 2行分の高さを確保して、左右カードの名前ブロック位置を揃える
-       （Programmerは1行・Modelは2行だが両者のフォントサイズは同一） */
+       （Engineerは1行・Modelは2行だが両者のフォントサイズは同一） */
     min-height: 1.9em;
 }
 .card-en--serif {
